@@ -161,3 +161,4 @@ Dentro del cuerpo del componente funcional se retorna la configuracion de las ru
 	</Routes>
 </BrowserRouter>
 ```
+
