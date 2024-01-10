@@ -4,6 +4,8 @@ This are my react-notes while learning React with Victor Robles's course on Udem
 ## Content
  - [Basic definitions](#Basic-definitions)
  - [Creating a react app](#Create-a-react-app)
+   - [Create React App (Old Way)](#Create-React-App-Old-way)
+   - [Setup React App from scratch](#Setup-React-App-from-scratch)
  - [Components](#Components)
  - [React State](#React-State)
  - [React Hooks](#React-Hooks)
@@ -30,7 +32,7 @@ To create a component, it should be created with a dash symbol on its name to av
 npm install react
 ```
 ## Create a react app
-### Create React App (Old Way)
+### Create React App (Old way)
 ```
 npm create-react-app
 ```
@@ -72,12 +74,7 @@ npm install react react-dom
 
 #### &nbsp;&nbsp;3. Babel Dependencies
 ```
-npm i --save-dev babel-loader @babel/preset-env @babel/core 
-@babel/plugin-transform-runtime 
-@babel/preset-react 
-@babel/eslint-parser 
-@babel/runtime
-@babel/cli
+npm i --save-dev babel-loader @babel/preset-env @babel/core @babel/plugin-transform-runtime @babel/preset-react @babel/eslint-parser @babel/runtime @babel/cli
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;**babel-loader**<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Allows transpiling JavaScript files using babel and webpack. exposes a loader-builder utility that allows users to add custom handling of Babel’s configuration for each file that it processes.
