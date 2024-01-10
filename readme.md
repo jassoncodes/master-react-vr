@@ -1,4 +1,18 @@
-## React
+# React
+This are my react-notes while learning React with Victor Robles's course on Udemy and online material from many sources.
+
+## Content
+ - [Basic definitions](#Basic-definitions)
+ - [Creating a react app](#Create-a-react-app)
+ - [Components](#Components)
+ - [React State](#React-State)
+ - [React Hooks](#React-Hooks)
+ - [Best practices](#Best-practices-for-using-React-Hooks)
+ - [Native Ajax Request](#Native-Ajax-Request)
+ - [Developing a React Project](#Developing-a-React-Project)
+ - [React Router](#React-Router)
+
+## Basic definitions
 Is a Javascript library only responsible for the view layer of an application. It would only handle the rendering of the user interface and its updates when it changes.
 
 >In short: Is a Javascript library for building user interfaces
@@ -15,12 +29,12 @@ To create a component, it should be created with a dash symbol on its name to av
 ```
 npm install react
 ```
-
-**Create React App (Old Way)**
+## Create a react app
+### Create React App (Old Way)
 ```
 npm create-react-app
 ```
-### Sintaxis Básica de un Componente React
+#### Sintaxis Básica de un Componente React
 ```Javascript
 import React from 'react'
 
@@ -29,13 +43,237 @@ export const MiComponente = () => {
     <div>MiComponente</div>
   )
 }
-
 ```
+
+### Setup React App from scratch
+
+#### Step 1: Install React App Dependencies
+#### &nbsp;&nbsp;1. Webpack + Webpack CLI + Webpack Server
+```
+npm install --save-dev webpack webpack-cli webpack-dev-server
+```
+&nbsp;&nbsp;&nbsp;&nbsp;**Webpack**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It bundles all the app code into a final build
+
+&nbsp;&nbsp;&nbsp;&nbsp;**Webpack CLI**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Provides a set of commands to help setting up a custom webpack project.
+
+&nbsp;&nbsp;&nbsp;&nbsp;**Webpack Server**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It will help to create a localhost dev environment using a mini NodeJS+ExpressJS server.
+
+#### &nbsp;&nbsp;2. React 
+```
+npm install react react-dom
+```
+&nbsp;&nbsp;&nbsp;&nbsp;**react**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;React library
+&nbsp;&nbsp;&nbsp;&nbsp;**react-dom**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;It give us the methods needed to manage DOM elements.
+
+#### &nbsp;&nbsp;3. Babel Dependencies
+```
+npm i --save-dev babel-loader @babel/preset-env @babel/core 
+@babel/plugin-transform-runtime 
+@babel/preset-react 
+@babel/eslint-parser 
+@babel/runtime
+@babel/cli
+```
+&nbsp;&nbsp;&nbsp;&nbsp;**babel-loader**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Allows transpiling JavaScript files using babel and webpack. exposes a loader-builder utility that allows users to add custom handling of Babel’s configuration for each file that it processes.
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel/preset-env**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Allows you to use the latest JavaScript without needing to micromanage which syntax transforms (and optionally, browser polyfills) are needed by your target environment(s). This both makes your life easier and JavaScript bundles smaller!
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel-core**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Core package
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel/plugin-transform-runtime**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A plugin that enables the re-use of Babel’s injected helper code to save on codesize
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel/preset-react**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Use react preset when we are using Reactjs. Helps in converting html files to react based file
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel-eslint**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Parser that allows ESLint to run on source code that is transformed by Babel
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel/runtime**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Package that contains a polyfill and many other things that Babel can reference.
+
+&nbsp;&nbsp;&nbsp;&nbsp;**babel/cli**<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Command line interface to use babel
+
+### Step 2: Configuration Files
+#### &nbsp;&nbsp;1. Configuration file for babel
+```
+touch .babelrc
+```
+>```json
+>{
+>    "presets": ["@babel/preset-env", "@babel/preset-react"],
+>    "plugins": ["@babel/plugin-transform-runtime"]
+>}
+>```
+
+#### &nbsp;&nbsp;2. Configuration file for webpack
+&nbsp;&nbsp;&nbsp;&nbsp;One of the most important files , it configures the runtime for the development process.
+```
+touch .webpack.config.js
+```
+&nbsp;&nbsp;&nbsp;&nbsp;File content:
+>```javascript
+>const path = require("path");
+>
+>/*We are basically telling webpack to take index.js from entry. Then check for all file extensions in resolve. 
+>After that apply all the rules in module.rules and produce the output and place it in main.js in the public folder.*/
+>
+>module.exports={
+>    /** "mode"
+>     * the environment - development, production, none. tells webpack 
+>     * to use its built-in optimizations accordingly. default is production 
+>     */
+>    mode: "development", 
+>    /** "entry"
+>     * the entry point 
+>     */
+>    entry: "./index.js", 
+>    output: {
+>        /** "path"
+>         * the folder path of the output file 
+>         */
+>        path: path.resolve(__dirname, "public"),
+>        /** "filename"
+>         * the name of the output file 
+>         */
+>        filename: "main.js"
+>    },
+>    /** "target"
+>     * setting "node" as target app (server side), and setting it as "web" is 
+>     * for browser (client side). Default is "web"
+>     */
+>    target: "web",
+>    devServer: {
+>        /** "port" 
+>         * port of dev server (3000 most common or default)
+>        */
+>        port: "3000",
+>        /** "static" 
+>         * This property tells Webpack what static file it should serve
+>        */
+>        static: ["./public"],
+>        /** "open" 
+>         * opens the browser after server is successfully started
+>        */
+>        open: true,
+>        /** "hot"
+>         * enabling and disabling HMR. takes "true", "false" and "only". 
+>         * "only" is used if enable Hot Module Replacement without page 
+>         * refresh as a fallback in case of build failures
+>         */
+>        hot: true ,
+>        /** "liveReload"
+>         * disable live reload on the browser. "hot" must be set to false for this to work
+>        */
+>        liveReload: true
+>    },
+>    resolve: {
+>        /** "extensions" 
+>         * If multiple files share the same name but have different extensions, webpack will 
+>         * resolve the one with the extension listed first in the array and skip the rest. 
+>         * This is what enables users to leave off the extension when importing
+>         */
+>        extensions: ['.js','.jsx',".ts",'.json'] 
+>    },
+>    module:{
+>        /** "rules"
+>         * This says - "Hey webpack compiler, when you come across a path that resolves to a '.js or .jsx' 
+>         * file inside of a require()/import statement, use the babel-loader to transform it before you 
+>         * add it to the bundle. And in this process, kindly make sure to exclude node_modules folder from 
+>         * being searched"
+>         */
+>        rules: [
+>            {
+>                test: /\.(js|jsx)$/,    //kind of file extension this rule should look for and apply in test
+>                exclude: /node_modules/, //folder to be excluded
+>                use:  'babel-loader' //loader which we are going to use
+>            }
+>        ]
+>    }
+>}
+>```
+
+### Step 3: Configurate Scripts
+&nbsp;&nbsp;&nbsp;&nbsp;Setup the scripts in ```package.json``` file.
+>```json
+>{
+>    //setup npm start command
+>    "start": "webpack-dev-server .",
+>   //setup npm build
+>   "build": "webpack ."
+>}
+>```
+
+### Step 4: Setup App Structure
+&nbsp;&nbsp;&nbsp;&nbsp;Create app files and folers needed
+```
+├───public
+│       index.html
+└───src
+        index.js
+        App.js
+```
+```index.html``` file basic content:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- It reference the javascript bundle file generated by Webpack -->
+    <script src="main.js"></script>
+  </body>
+</html>
+```
+
+```index.js``` file basic content:
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+```
+
+```App.js``` file basic content:
+
+```javascript
+import React from 'react'
+
+export const App = () => {
+  return (
+    <div>React App made from scratch!</div>
+  )
+}
+```
+
+Update the ```main``` property on ```package.json``` file by specifing the actual  point for the app:
+```json
+{
+  "main": "./src/index.js",
+}
+```
+## Components
 
 ### Propiedades de Componentes
 Se usan para obtener informacion externa del componente
 
-### Estados 
+## Estado (React State)
 Son las reacciones o cambios que sufre un componente o subcomponente causados por otro componente o subcomponente. Si los cambios pueden ser reconstruidos (o reflejados) en funcion de otra información que ya este disponible en la aplicacion (otros estados) eso no es parte del estado.
 
 #### Donde almacenar el estado?
@@ -49,12 +287,12 @@ Por cada pieza de estado
 >2. También puedes poner el estado en algún componente encima de su padre común.
 >3. Si no puedes encontrar un componente donde tiene sentido poseer el estado, crea un nuevo componente solo para almacenar ese estado y añádelo en algún lugar de la jerarquía encima del componente padre común.
 
-### React Hooks
+## React Hooks
 Es una funcion que se utiliza para enganchar el estado de react y trabajar con el ciclo de vida de un componente.
 
 > In short: Es una funcion que se usa para que cuando pase algo, se haga algo (accion -> reaccion)
 
-#### Most commonly used React Hooks
+### Most commonly used React Hooks
 **useState**<br>
 Allows you to use state in a functional component. You would use useState() when you need to manage state in your components, such as managing form input or toggling a component’s visibility.
 
@@ -102,7 +340,7 @@ Lets a component associate a unique ID with itself. Typically used with accessib
 **useSyncExternalStore()**<br>
 Lets a component subscribe to an external store.
 
-#### Best practices for using React Hooks:
+## Best practices for using React Hooks
 * Only use React Hooks at the top level of a functional component or custom hook.
   
 * Use the useEffect hook to manage side effects, such as fetching data from an API or updating the document title.
@@ -118,13 +356,13 @@ Lets a component subscribe to an external store.
 >**Pro Tip**<br>
 >Los Hooks se deben crear antes de las funciones propias del componente
 
-## Peticiones Ajax de manera nativa (sin librerias como Axios)
-Se pueden hacer de 2 maneras:
+## Native Ajax Request
+Se pueden hacer peticiones de manera nativa a través de 2 formas (sin librerias como Axios):
 * Mediante promesas 
 * De manera asincrona con async y await 
 
 
-### Proceso de creación de una app React
+## Developing a React Project
 1. Maquetacion HTML+CSS 
 2. Adaptacion de maqueta a proyecto react: Definir layout del app con el HTML base maquetado y vincular archivos css
 3. Componetización, se puede hacer de dos maneras dependiendo del proyecto:
@@ -135,15 +373,15 @@ Se pueden hacer de 2 maneras:
 >**Pro Tip**<br>
 >*Helpers* (en React) o *Servicios* (en Angular) son funciones utilitarias que se crean para ser usadas en toda la aplicacion.
 
-### React Router
+## React Router
 Libreria para definir rutas en una aplicacion SPA.
 
-**Setup**
+### Setup
 ```
 npm install react-router-dom
 ```
 
-**Configuracion**
+### Configuracion
 
 Se debe crear como un componente cualquiera pero debe importar los subcomponentes que serviran para configurar las rutas y los componentes de la aplicacion que va a renderizar para cada ruta configurada:
 ```Javascript
